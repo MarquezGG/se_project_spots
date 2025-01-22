@@ -1,7 +1,7 @@
 .card {
   width: 413px;
-  height: 445px;
 }
+
 .card__image {
   height: 413px;
   width: 413px;
@@ -24,4 +24,6 @@
 
 .card__title {
   margin: 0;
+  font-size: 20px;
+  line-height: 1.2;
 }
