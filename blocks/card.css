@@ -1,10 +1,6 @@
-.card {
-  width: 413px;
-}
-
 .card__image {
   height: 413px;
-  width: 413px;
+  width: 100%;
   object-fit: cover;
   display: block;
 }
@@ -20,10 +16,25 @@
   height: 20px;
   border: none;
   opacity: 0.4;
+  cursor: pointer;
+  background-color: #fcf5e5;
+  transition: opacity 0.2s ease;
+}
+
+.card__like-btn:hover {
+  opacity: 1;
 }
 
 .card__title {
   margin: 0;
   font-size: 20px;
   line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+@media screen and (max-width: 627px) {
+  .card__image {
+    height: 288px;
+  }
 }
