@@ -19,3 +19,7 @@ New Post Button (images/screenshots/post button.mp4)
 ## GitHub link
 
 https://github.com/MarquezGG/se_project_spots
+
+## Video Preview
+
+https://1drv.ms/v/c/b8d273e74844f620/ERbxWB0wEztMgz1Go7_7BNsB2DBpn1Ao7OkBh9AcArFEUw
