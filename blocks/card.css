@@ -3,7 +3,7 @@
   width: 100%;
   object-fit: cover;
   display: block;
-  border-radius: 10px;
+  border-radius: 8px;
   margin-bottom: 12px;
 }
 
@@ -19,7 +19,7 @@
   border: none;
   opacity: 0.4;
   cursor: pointer;
-  background-color: #fcf5e5;
+  background-color: transparent;
   transition: opacity 0.2s ease;
 }
 
@@ -38,5 +38,10 @@
 @media screen and (max-width: 627px) {
   .card__image {
     height: 288px;
+  }
+
+  .card__title {
+    font-size: 16px;
+    line-height: 1;
   }
 }
