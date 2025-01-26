@@ -4,9 +4,9 @@ A website allowing users upload their photos to a profile and react to them with
 
 ## Tech Stack
 
--HTML
--CSS
--Responsive Design
+- HTML
+- CSS
+- Responsive Design
 
 ## Screenshots
 
