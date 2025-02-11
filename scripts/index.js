@@ -34,6 +34,7 @@ const editModalDescriptionInput = document.querySelector(
   "#profile-description-input"
 );
 const profileDescription = document.querySelector(".profile__description");
+const editFormElement = document.querySelector(".modal__form");
 
 function openModal() {
   editModalNameInput.value = profileName.textContent;
@@ -41,8 +42,15 @@ function openModal() {
   editProfileModal.classList.add("modal_opened");
 }
 
-function closeModal(modal) {
+function closeModal() {
   editProfileModal.classList.remove("modal_opened");
+}
+
+function handleEditFormSubmit(event) {
+  event.preventDefault();
+  profileName.textContent = editModalNameInput.value;
+  profileDescription.textContent = editModalDescriptionInput.value;
 }
 profileEditButton.addEventListener("click", openModal);
 closeModalButton.addEventListener("click", closeModal);
+editFormElement.addEventListener("submit", handleEditFormSubmit);
