@@ -48,6 +48,7 @@ function getCardElement(data) {
   const cardImageEl = cardElement.querySelector(".card__image");
   cardNameEl.textContent = data.name;
   cardImageEl.src = data.link;
+  cardImageEl.alt = data.name;
   return cardElement;
 }
 
@@ -65,6 +66,7 @@ function handleEditFormSubmit(event) {
   event.preventDefault();
   profileName.textContent = editModalNameInput.value;
   profileDescription.textContent = editModalDescriptionInput.value;
+  closeModal();
 }
 profileEditButton.addEventListener("click", openModal);
 closeModalButton.addEventListener("click", closeModal);
