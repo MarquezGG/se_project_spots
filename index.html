@@ -39,6 +39,7 @@
           <ul class="cards__list">
             <template id="card-template">
               <li class="card">
+                <button class="card__delete-button" type="button"></button>
                 <img
                   src="./images/1-photo-by-moritz-feldmann-from-pexels-min.jpg"
                   alt="Val Thorens"
@@ -104,6 +105,16 @@
             </label>
             <button type="submit" class="modal__submit-btn">Save</button>
           </form>
+        </div>
+      </div>
+      <div class="modal modal_type_preview" id="preview-modal">
+        <div class="modal__image-container">
+          <button
+            class="modal__close-btn modal__close-preview"
+            type="button"
+          ></button>
+          <img src="#" alt="Preview Image" class="modal__image" />
+          <p class="modal__caption"></p>
         </div>
       </div>
     </div>
