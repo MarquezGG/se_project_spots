@@ -97,6 +97,7 @@
   font-size: 32px;
   line-height: 1;
   font-weight: 500;
+  color: #212121;
 }
 
 .modal__label {
@@ -107,6 +108,7 @@
   font-size: 16px;
   line-height: 1.1;
   opacity: 70%;
+  color: #212121;
 }
 
 .modal__submit-btn {
@@ -138,6 +140,11 @@
   font-weight: 500;
   border: 1px solid rgba(33, 33, 33, 0.4);
   border-radius: 8px;
+  color: #212121;
+}
+
+.modal__input::placeholder {
+  color: rgba(33, 33, 33, 0.3);
 }
 
 .modal__caption {
