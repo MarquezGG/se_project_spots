@@ -1,3 +1,4 @@
+import { settings, disableButton } from "./validation.js";
 const initialCards = [
   {
     name: "Golden Gate Bridge",
@@ -52,6 +53,8 @@ const previewModalCloseButton = document.querySelector(".modal__close-preview");
 const previewImageEl = document.querySelector(".modal__image");
 const previewCaptionEl = document.querySelector(".modal__caption");
 const closeButtons = document.querySelectorAll(".modal__close-btn");
+const cardSubmitButton = document.querySelector(".modal__submit-btn");
+
 function handleAddCardFormSubmit(evt) {
   evt.preventDefault();
   const inputValues = {
@@ -62,8 +65,9 @@ function handleAddCardFormSubmit(evt) {
   const cardElement = getCardElement(inputValues);
   cardsList.prepend(cardElement);
 
-  closeModal(addCardModal);
+  disableButton(cardSubmitButton, settings);
   evt.target.reset();
+  closeModal(addCardModal);
 }
 
 addCardFormElement.addEventListener("submit", handleAddCardFormSubmit);
@@ -120,6 +124,10 @@ function handleEditFormSubmit(event) {
 profileEditButton.addEventListener("click", () => {
   editModalNameInput.value = profileName.textContent;
   editModalDescriptionInput.value = profileDescription.textContent;
+  resetValiidation(editFormElement, [
+    editModalNameInput,
+    editModalDescriptionInput,
+  ]);
   openModal(editProfileModal);
 });
 
