@@ -1,4 +1,9 @@
-import { settings, disableButton } from "./validation.js";
+import {
+  settings,
+  disableButton,
+  resetValidation,
+  toggleButtonState,
+} from "./validation.js";
 const initialCards = [
   {
     name: "Golden Gate Bridge",
@@ -65,8 +70,8 @@ function handleAddCardFormSubmit(evt) {
   const cardElement = getCardElement(inputValues);
   cardsList.prepend(cardElement);
 
-  disableButton(cardSubmitButton, settings);
   evt.target.reset();
+  disableButton(cardSubmitButton, settings);
   closeModal(addCardModal);
 }
 
@@ -109,10 +114,12 @@ closeButtons.forEach((button) => {
 });
 function openModal(modal) {
   modal.classList.add("modal_opened");
+  document.addEventListener("keydown", handleEscapeKey);
 }
 
 function closeModal(modal) {
   modal.classList.remove("modal_opened");
+  document.removeEventListener("keydown", handleEscapeKey);
 }
 
 function handleEditFormSubmit(event) {
@@ -124,20 +131,59 @@ function handleEditFormSubmit(event) {
 profileEditButton.addEventListener("click", () => {
   editModalNameInput.value = profileName.textContent;
   editModalDescriptionInput.value = profileDescription.textContent;
-  resetValiidation(editFormElement, [
-    editModalNameInput,
-    editModalDescriptionInput,
-  ]);
+  resetValidation(
+    editFormElement,
+    [editModalNameInput, editModalDescriptionInput],
+    settings
+  );
+  const submitButton = editFormElement.querySelector(
+    settings.submitButtonSelector
+  );
+  toggleButtonState(
+    [editModalNameInput, editModalDescriptionInput],
+    submitButton,
+    settings
+  );
   openModal(editProfileModal);
 });
 
 editFormElement.addEventListener("submit", handleEditFormSubmit);
-addCardButton.addEventListener("click", () => openModal(addCardModal));
+
 addCardModalCloseButton.addEventListener("click", () =>
   closeModal(addCardModal)
 );
+addCardButton.addEventListener("click", () => {
+  addCardFormElement.reset();
+  resetValidation(addCardFormElement, [linkInputEl, captionInputEl], settings);
+  const addCardSubmitButton = addCardFormElement.querySelector(
+    settings.submitButtonSelector
+  );
+  toggleButtonState(
+    [linkInputEl, captionInputEl],
+    addCardSubmitButton,
+    settings
+  );
+  openModal(addCardModal);
+});
 
 initialCards.forEach((item) => {
   const cardElement = getCardElement(item);
   cardsList.append(cardElement);
+});
+
+function handleEscapeKey(event) {
+  if (event.key === "Escape") {
+    const openModal = document.querySelector(".modal_opened");
+    if (openModal) {
+      closeModal(openModal);
+    }
+  }
+}
+
+document.querySelectorAll(".modal").forEach((modal) => {
+  modal.addEventListener("mousedown", (event) => {
+    if (event.target === modal) {
+      closeModal(modal);
+    }
+  });
 });
