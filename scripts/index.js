@@ -44,15 +44,14 @@ const editModalDescriptionInput = document.querySelector(
   "#profile-description-input"
 );
 const profileDescription = document.querySelector(".profile__description");
-const editFormElement = editProfileModal.querySelector(".modal__form");
+const editFormElement = document.forms["edit-profile"];
 const cardTemplate = document.querySelector("#card-template");
 const cardsList = document.querySelector(".cards__list");
 const addCardButton = document.querySelector(".profile__add-btn");
 const addCardModal = document.querySelector("#add-card-modal");
-const addCardModalCloseButton = addCardModal.querySelector(".modal__close-btn");
-const addCardFormElement = document.querySelector("[name='add-card-form']");
-const linkInputEl = document.querySelector("#card-image-input");
-const captionInputEl = addCardModal.querySelector("#caption-input");
+const addCardFormElement = document.forms["add-card-form"];
+const linkInputEl = addCardFormElement.querySelector("#card-image-input");
+const captionInputEl = addCardFormElement.querySelector("#caption-input");
 const previewModalEl = document.querySelector("#preview-modal");
 const previewModalCloseButton = document.querySelector(".modal__close-preview");
 const previewImageEl = document.querySelector(".modal__image");
@@ -120,8 +119,14 @@ function openModal(modal) {
 function closeModal(modal) {
   modal.classList.remove("modal_opened");
   document.removeEventListener("keydown", handleEscapeKey);
+  const form = modal.querySelector(settings.formSelector);
+  if (form) {
+    const inputs = Array.from(form.querySelectorAll(settings.inputSelector));
+    resetValidation(form, inputs, settings);
+    const submitButton = form.querySelector(settings.submitButtonSelector);
+    disableButton(submitButton, settings);
+  }
 }
-
 function handleEditFormSubmit(event) {
   event.preventDefault();
   profileName.textContent = editModalNameInput.value;
@@ -149,20 +154,7 @@ profileEditButton.addEventListener("click", () => {
 
 editFormElement.addEventListener("submit", handleEditFormSubmit);
 
-addCardModalCloseButton.addEventListener("click", () =>
-  closeModal(addCardModal)
-);
 addCardButton.addEventListener("click", () => {
-  addCardFormElement.reset();
-  resetValidation(addCardFormElement, [linkInputEl, captionInputEl], settings);
-  const addCardSubmitButton = addCardFormElement.querySelector(
-    settings.submitButtonSelector
-  );
-  toggleButtonState(
-    [linkInputEl, captionInputEl],
-    addCardSubmitButton,
-    settings
-  );
   openModal(addCardModal);
 });
 
