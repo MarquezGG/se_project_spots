@@ -42,7 +42,6 @@ export const toggleButtonState = (inputList, buttonElement, settings) => {
     buttonElement.disabled = false;
     buttonElement.classList.remove(settings.inactiveButtonClass);
   }
-  console.log(hasInvalidInput(inputList));
 };
 
 export const disableButton = (buttonElement, settings) => {
