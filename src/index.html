@@ -6,19 +6,22 @@
     <meta name="description" content="Brand new coffeshop" />
     <meta name="author" content="Eduard Petrosian" />
     <meta name="keywords" content="HTML, CSS" />
-    <link rel="stylesheet" href="pages/index.css" />
-    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+
     <title>Spots</title>
   </head>
   <body>
     <div class="page">
       <header class="header">
-        <img src="images/Logo.svg" alt="Spot Logo" class="header__logo" />
+        <img
+          src="<%=require('./images/Logo.svg')%>"
+          alt="Spot Logo"
+          class="header__logo"
+        />
       </header>
       <main class="content">
         <section class="profile">
           <img
-            src="./images/avatar-min.jpg"
+            src="<%=require('./images/avatar-min.jpg')%>"
             alt="Avatar"
             class="profile__avatar"
           />
@@ -27,11 +30,12 @@
             <p class="profile__description">Civil Aviator</p>
 
             <button class="profile__edit-btn" type="button">
-              <img src="./images/Pen.svg" alt="Edit" /> Edit Profile
+              <img src="<%=require('./images/Pen.svg')%>" alt="Edit" /> Edit
+              Profile
             </button>
           </div>
           <button class="profile__add-btn" type="button">
-            <img src="images/Plus.svg" alt="Plus icon" />
+            <img src="<%=require('./images/Plus.svg')%>" alt="Plus icon" />
             New Post
           </button>
         </section>
@@ -137,7 +141,5 @@
         </div>
       </div>
     </div>
-    <script defer src="scripts/index.js" type="module"></script>
-    <script defer src="scripts/validation.js" type="module"></script>
   </body>
 </html>

@@ -13,6 +13,8 @@
   font-weight: 500;
   padding: 0 10px;
   visibility: hidden;
+  transition: visibility 0.3s, opacity 0.3s ease-in;
+  opacity: 0;
 }
 
 .modal_type_preview {
@@ -41,6 +43,7 @@
 }
 .modal_opened {
   visibility: visible;
+  opacity: 1;
 }
 
 .modal__caption {
