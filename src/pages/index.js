@@ -40,6 +40,7 @@ import Api from "../utils/Api.js";
 
 const profileEditButton = document.querySelector(".profile__edit-btn");
 const profileName = document.querySelector(".profile__name");
+const avatarModal = document.querySelector("#avatar-modal");
 const editProfileModal = document.querySelector("#edit-profile-modal");
 const closeModalButton = document.querySelector(".modal__close-btn");
 const editModalNameInput = document.querySelector("#profile-name-input");
@@ -61,6 +62,22 @@ const previewImageEl = document.querySelector(".modal__image");
 const previewCaptionEl = document.querySelector(".modal__caption");
 const closeButtons = document.querySelectorAll(".modal__close-btn");
 const cardSubmitButton = document.querySelector(".modal__submit-btn");
+
+const avatarForm = avatarModal.querySelector("#edit-avatar-form");
+const avatarSubmitBtn = avatarForm.querySelector(".modal__submit-btn");
+const avatarInput = avatarModal.querySelector("#profile-avatar-input");
+const avatarButton = document.querySelector(".profile__avatar-btn");
+const profileAvatar = document.querySelector(".profile__avatar");
+
+const deleteModal = document.querySelector("#delete-modal");
+const deleteForm = document.querySelector("#delete-form");
+const deleteConfirmBtn = deleteForm.querySelector('button[type="submit"]');
+const deleteCancelBtn = deleteForm.querySelector('button[type="button"]');
+
+// Variable to store the card being deleted
+let selectedCard;
+let selectedCardId;
+
 const api = new Api({
   baseUrl: "https://around-api.en.tripleten-services.com/v1",
   headers: {
@@ -71,8 +88,8 @@ const api = new Api({
 
 api
   .getAppInfo()
-  .then((cards) => {
-    console.log(cards);
+  .then(([cards, userInfo]) => {
+    console.log(cards, userInfo);
     cards.forEach((item) => {
       const cardElement = getCardElement(item);
       cardsList.append(cardElement);
@@ -87,12 +104,18 @@ function handleAddCardFormSubmit(evt) {
     link: linkInputEl.value,
   };
 
-  const cardElement = getCardElement(inputValues);
-  cardsList.prepend(cardElement);
-
-  evt.target.reset();
-  disableButton(cardSubmitButton, settings);
-  closeModal(addCardModal);
+  api
+    .addCard(inputValues)
+    .then((data) => {
+      const cardElement = getCardElement(data);
+      cardsList.prepend(cardElement);
+      evt.target.reset();
+      disableButton(cardSubmitButton, settings);
+      closeModal(addCardModal);
+    })
+    .catch((error) => {
+      console.error("Error adding card:", error);
+    });
 }
 
 addCardFormElement.addEventListener("submit", handleAddCardFormSubmit);
@@ -117,9 +140,9 @@ function getCardElement(data) {
   cardImageEl.src = data.link;
   cardImageEl.alt = data.name;
   const cardDeleteButton = cardElement.querySelector(".card__delete-button");
-  cardDeleteButton.addEventListener("click", () => {
-    cardDeleteButton.closest(".card").remove();
-  });
+  cardDeleteButton.addEventListener("click", (evt) =>
+    handleDeleteCard(cardElement, data)
+  );
   const cardLikeButton = cardElement.querySelector(".card__like-btn");
   cardLikeButton.addEventListener("click", () => {
     cardLikeButton.classList.toggle("card__like-btn_active");
@@ -150,9 +173,17 @@ function closeModal(modal) {
 }
 function handleEditFormSubmit(event) {
   event.preventDefault();
-  profileName.textContent = editModalNameInput.value;
-  profileDescription.textContent = editModalDescriptionInput.value;
-  closeModal(editProfileModal);
+  api
+    .editUserInfo({
+      name: editModalNameInput.value,
+      about: editModalDescriptionInput.value,
+    })
+    .then((data) => {
+      profileName.textContent = data.name;
+      profileDescription.textContent = data.about;
+      closeModal(editProfileModal);
+    })
+    .catch(console.error);
 }
 profileEditButton.addEventListener("click", () => {
   editModalNameInput.value = profileName.textContent;
@@ -174,6 +205,53 @@ profileEditButton.addEventListener("click", () => {
 });
 
 editFormElement.addEventListener("submit", handleEditFormSubmit);
+
+function handleAvatarFormSubmit(event) {
+  event.preventDefault();
+  api
+    .updateAvatar({
+      avatar: avatarInput.value,
+    })
+    .then((data) => {
+      profileAvatar.src = data.avatar;
+      closeModal(avatarModal);
+    })
+    .catch(console.error);
+}
+
+avatarForm.addEventListener("submit", handleAvatarFormSubmit);
+
+// Handle delete card - store selected card and open modal
+function handleDeleteCard(cardElement, data) {
+  selectedCard = cardElement; // Assign the card element to selectedCard
+  selectedCardId = data._id; // Assign the card's ID to selectedCardId
+  openModal(deleteModal); // open the delete confirmation modal
+}
+// The submission handler makes use of the selectedCard and selectedCardId
+// variables to target the correct card.
+function handleDeleteSubmit(evt) {
+  evt.preventDefault();
+  api
+    .deleteCard(selectedCardId) // pass the ID to the api function
+    .then(() => {
+      selectedCard.remove(); // remove the card from the DOM
+      closeModal(deleteModal); // close the modal
+    })
+    .catch(console.error);
+}
+
+deleteForm.addEventListener("submit", handleDeleteSubmit);
+
+// Add input validation for avatar form
+avatarInput.addEventListener("input", () => {
+  toggleButtonState([avatarInput], avatarSubmitBtn, settings);
+});
+
+avatarButton.addEventListener("click", () => {
+  resetValidation(avatarForm, [avatarInput], settings);
+  toggleButtonState([avatarInput], avatarSubmitBtn, settings);
+  openModal(avatarModal);
+});
 
 addCardButton.addEventListener("click", () => {
   openModal(addCardModal);
