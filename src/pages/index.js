@@ -129,6 +129,22 @@ function getCardElement(data) {
 
   const cardNameEl = cardElement.querySelector(".card__title");
   const cardImageEl = cardElement.querySelector(".card__image");
+  const cardLikeButton = cardElement.querySelector(".card__like-btn");
+  const cardDeleteButton = cardElement.querySelector(".card__delete-button");
+  if (data.isLiked) {
+    cardLikeButton.classList.add("card__like-btn_active");
+  }
+
+  function handleLike(evt) {
+    const isLiked = evt.target.classList.contains("card__like-btn_active");
+    api
+      .changeLikeStatus(data._id, isLiked)
+      .then((updatedCard) => {
+        evt.target.classList.toggle("card__like-btn_active", !isLiked);
+      })
+      .catch(console.error);
+  }
+
   cardImageEl.addEventListener("click", () => {
     previewImageEl.src = data.link;
     previewImageEl.alt = data.name;
@@ -139,14 +155,12 @@ function getCardElement(data) {
   cardNameEl.textContent = data.name;
   cardImageEl.src = data.link;
   cardImageEl.alt = data.name;
-  const cardDeleteButton = cardElement.querySelector(".card__delete-button");
+
   cardDeleteButton.addEventListener("click", (evt) =>
     handleDeleteCard(cardElement, data)
   );
-  const cardLikeButton = cardElement.querySelector(".card__like-btn");
-  cardLikeButton.addEventListener("click", () => {
-    cardLikeButton.classList.toggle("card__like-btn_active");
-  });
+
+  cardLikeButton.addEventListener("click", (evt) => handleLike(evt, data._id));
 
   return cardElement;
 }
@@ -225,17 +239,16 @@ avatarForm.addEventListener("submit", handleAvatarFormSubmit);
 function handleDeleteCard(cardElement, data) {
   selectedCard = cardElement; // Assign the card element to selectedCard
   selectedCardId = data._id; // Assign the card's ID to selectedCardId
-  openModal(deleteModal); // open the delete confirmation modal
+  openModal(deleteModal);
 }
-// The submission handler makes use of the selectedCard and selectedCardId
-// variables to target the correct card.
+
 function handleDeleteSubmit(evt) {
   evt.preventDefault();
   api
-    .deleteCard(selectedCardId) // pass the ID to the api function
+    .deleteCard(selectedCardId)
     .then(() => {
-      selectedCard.remove(); // remove the card from the DOM
-      closeModal(deleteModal); // close the modal
+      selectedCard.remove();
+      closeModal(deleteModal);
     })
     .catch(console.error);
 }
