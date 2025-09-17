@@ -42,7 +42,7 @@ const profileAvatar = document.querySelector(".profile__avatar");
 
 const deleteModal = document.querySelector("#delete-modal");
 const deleteForm = document.querySelector("#delete-form");
-const deleteConfirmBtn = deleteForm.querySelector('button[type="submit"]');
+const deleteConfirmBtn = deleteForm.querySelector(".modal__submit-btn_delete");
 const deleteCancelBtn = deleteForm.querySelector('button[type="button"]');
 
 let selectedCard;
@@ -160,7 +160,10 @@ function closeModal(modal) {
     const inputs = Array.from(form.querySelectorAll(settings.inputSelector));
     resetValidation(form, inputs, settings);
     const submitButton = form.querySelector(settings.submitButtonSelector);
-    disableButton(submitButton, settings);
+    // Don't disable the delete modal button since it doesn't need validation
+    if (modal.id !== "delete-modal") {
+      disableButton(submitButton, settings);
+    }
   }
 }
 function handleEditFormSubmit(event) {
@@ -231,7 +234,7 @@ function handleDeleteCard(cardElement, data) {
 
 function handleDeleteSubmit(evt) {
   evt.preventDefault();
-  const submitBtn = evt.submitter;
+  const submitBtn = deleteModal.querySelector(".modal__submit-btn_delete");
   setButtonText(submitBtn, true, "Delete", "Deleting...");
   api
     .deleteCard(selectedCardId)
