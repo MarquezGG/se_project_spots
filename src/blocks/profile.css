@@ -29,30 +29,25 @@
   border: none;
   top: 0;
   left: 0;
+  padding: 12px;
 }
 
 .profile__avatar-btn::after {
   content: "Edit Avatar";
-  color: #fff;
-  display: flex;
-  justify-content: space-between;
   font-size: 16px;
   line-height: 1;
   font-weight: 500;
   font-family: Poppins, Arial, Helvetica, sans-serif;
+  transition: opacity 0.1s ease;
+  color: #fff;
 }
-
 .profile__avatar-container:hover .profile__avatar-btn {
   visibility: visible;
   background-color: rgba(0, 0, 0, 0.5);
   border-radius: 8px;
   cursor: pointer;
-  transition: opacity 0.2s ease;
 }
-
 .profile__pencil-icon {
-  width: 16px;
-  height: 16px;
   margin-right: 8px;
 }
 
@@ -195,6 +190,7 @@
     margin: 0;
     align-self: center;
     justify-content: center;
+    align-items: center;
     width: 100%;
     margin-left: 0;
     margin-right: 0;
