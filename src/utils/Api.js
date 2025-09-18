@@ -5,11 +5,7 @@ class Api {
   }
 
   getAppInfo() {
-    return Promise.all([
-      this.getInitialCards(),
-      this.getUserInfo(),
-      this.editUserInfo(),
-    ]);
+    return Promise.all([this.getInitialCards(), this.getUserInfo()]);
   }
 
   getInitialCards() {
@@ -19,19 +15,34 @@ class Api {
       if (res.ok) {
         return res.json();
       }
-      // if the server returns an error, reject the promise
+      return Promise.reject(`Error: ${res.status}`);
+    });
+  }
+
+  addCard({ name, link }) {
+    return fetch(`${this._baseUrl}/cards`, {
+      method: "POST",
+      headers: this._headers,
+      body: JSON.stringify({
+        name,
+        link,
+      }),
+    }).then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
       return Promise.reject(`Error: ${res.status}`);
     });
   }
 
   getUserInfo() {
     return fetch(`${this._baseUrl}/users/me`, {
+      method: "GET",
       headers: this._headers,
     }).then((res) => {
       if (res.ok) {
         return res.json();
       }
-      // if the server returns an error, reject the promise
       return Promise.reject(`Error: ${res.status}`);
     });
   }
@@ -40,7 +51,6 @@ class Api {
     return fetch(`${this._baseUrl}/users/me`, {
       method: "PATCH",
       headers: this._headers,
-      // Send the data in the body as a JSON string.
       body: JSON.stringify({
         name,
         about,
@@ -49,9 +59,47 @@ class Api {
       if (res.ok) {
         return res.json();
       }
-      return Promise.reject(`Error: ${res.status}`); // handle the response
+      return Promise.reject(`Error: ${res.status}`);
     });
   }
-  // handle the response;
+
+  updateAvatar({ avatar }) {
+    return fetch(`${this._baseUrl}/users/me/avatar`, {
+      method: "PATCH",
+      headers: this._headers,
+      body: JSON.stringify({
+        avatar,
+      }),
+    }).then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Error: ${res.status}`);
+    });
+  }
+
+  deleteCard(cardId) {
+    return fetch(`${this._baseUrl}/cards/${cardId}`, {
+      method: "DELETE",
+      headers: this._headers,
+    }).then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Error: ${res.status}`);
+    });
+  }
+
+  changeLikeStatus(cardId, isLiked) {
+    return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
+      method: isLiked ? "DELETE" : "PUT",
+      headers: this._headers,
+    }).then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Error: ${res.status}`);
+    });
+  }
 }
 export default Api;
