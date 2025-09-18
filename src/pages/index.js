@@ -160,7 +160,6 @@ function closeModal(modal) {
     const inputs = Array.from(form.querySelectorAll(settings.inputSelector));
     resetValidation(form, inputs, settings);
     const submitButton = form.querySelector(settings.submitButtonSelector);
-    // Don't disable the delete modal button since it doesn't need validation
     if (modal.id !== "delete-modal") {
       disableButton(submitButton, settings);
     }
