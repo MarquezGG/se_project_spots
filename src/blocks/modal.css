@@ -13,6 +13,8 @@
   font-weight: 500;
   padding: 0 10px;
   visibility: hidden;
+  transition: visibility 0.3s, opacity 0.3s ease-in;
+  opacity: 0;
 }
 
 .modal_type_preview {
@@ -41,6 +43,7 @@
 }
 .modal_opened {
   visibility: visible;
+  opacity: 1;
 }
 
 .modal__caption {
@@ -86,6 +89,13 @@
 .modal__close-btn:hover {
   opacity: 100%;
   transition: opacity 0.3s ease;
+}
+
+#delete-modal .modal__close-btn {
+  background-image: url(../images/Close\ Modal.svg);
+  right: -62px;
+  top: -8px;
+  opacity: 1;
 }
 
 .modal__close-preview:hover {
@@ -186,6 +196,36 @@
   visibility: visible;
 }
 
+/* Delete modal specific styles */
+.modal__button-container {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+}
+
+.modal__submit-btn_delete {
+  background: #ff6565;
+  border: none;
+  transition: background 0.2s ease;
+}
+
+.modal__submit-btn_delete:hover {
+  background: #ff3333;
+}
+
+.modal__submit-btn_cancel {
+  background: #fff;
+  color: #212121;
+  border: 1px solid rgba(33, 33, 33, 0.4);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.modal__submit-btn_cancel:hover {
+  background: #212121;
+  border: 1px solid #212121;
+  color: #fff;
+}
+
 @media screen and (max-width: 627px) {
   .modal__container {
     padding: 12px;
@@ -225,5 +265,25 @@
   .modal__image {
     border-radius: 10px;
     max-width: unset;
+  }
+
+  .modal__button-container {
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+  }
+
+  .modal__submit-btn_delete,
+  .modal__submit-btn_cancel {
+    width: 156px;
+    height: 52px;
+  }
+
+  .modal__title {
+    text-align: center;
+  }
+  #delete-modal .modal__close-btn {
+    top: -56px;
+    right: -6px;
   }
 }
